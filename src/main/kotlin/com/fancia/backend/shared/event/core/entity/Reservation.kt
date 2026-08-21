@@ -3,6 +3,7 @@ package com.fancia.backend.shared.event.core.entity
 import com.fancia.backend.shared.event.core.enums.ReservationStatus
 import jakarta.persistence.*
 import java.io.Serializable
+import java.time.LocalDateTime
 import java.util.*
 
 @Embeddable
@@ -35,4 +36,19 @@ class Reservation(
 
     @Enumerated(EnumType.STRING)
     var status: ReservationStatus? = ReservationStatus.PENDING
+
+    @Column(name = "tier_id")
+    var tierId: UUID? = null
+
+    @Column(name = "price_minor")
+    var priceMinor: Long? = null
+
+    @Column(length = 8)
+    var currency: String? = null
+
+    @Column(name = "stripe_checkout_session_id", length = 255)
+    var stripeCheckoutSessionId: String? = null
+
+    @Column(name = "paid_at")
+    var paidAt: LocalDateTime? = null
 }

@@ -8,4 +8,9 @@ data class ReservationResponse(
     var occurrenceId: UUID? = null,
     var userId: UUID? = null,
     var status: ReservationStatus? = null,
+    var guests: Int? = null,
+    var payload: String? = null,
+    var tierId: UUID? = null,
+    var priceMinor: Long? = null,
+    var currency: String? = null,
 )
