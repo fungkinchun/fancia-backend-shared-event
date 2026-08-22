@@ -8,6 +8,7 @@ import java.util.*
 data class EventResponse(
     val id: UUID? = null,
     var name: String = "",
+    var slug: String = "",
     var description: String = "",
     var interestGroups: Set<UUID>,
     var createdBy: UUID? = null,
