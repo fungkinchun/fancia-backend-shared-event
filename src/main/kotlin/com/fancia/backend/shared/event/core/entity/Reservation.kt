@@ -51,4 +51,13 @@ class Reservation(
 
     @Column(name = "paid_at")
     var paidAt: LocalDateTime? = null
+
+    @Column(name = "check_in_token", length = 64)
+    var checkInToken: String? = null
+
+    @Column(name = "checked_in_at")
+    var checkedInAt: LocalDateTime? = null
+
+    @Column(name = "checked_in_by")
+    var checkedInBy: UUID? = null
 }

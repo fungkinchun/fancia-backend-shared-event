@@ -1,6 +1,7 @@
 package com.fancia.backend.shared.event.core.dto
 
 import com.fancia.backend.shared.event.core.enums.ReservationStatus
+import java.time.LocalDateTime
 import java.util.*
 
 data class ReservationResponse(
@@ -13,4 +14,6 @@ data class ReservationResponse(
     var tierId: UUID? = null,
     var priceMinor: Long? = null,
     var currency: String? = null,
+    var checkedInAt: LocalDateTime? = null,
+    var checkInToken: String? = null,
 )

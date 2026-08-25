@@ -10,6 +10,8 @@ data class EventTicketTierResponse(
     val priceMinor: Long,
     val currency: String,
     val capacityPerOccurrence: Int?,
+    val checkInBeforeMinutes: Int,
+    val checkInAfterMinutes: Int,
     val sortOrder: Int,
     val createdBy: UUID?,
     val createdAt: LocalDateTime?,

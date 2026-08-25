@@ -14,5 +14,9 @@ data class CreateEventTicketTierRequest(
     val currency: String = "gbp",
     @field:Min(1)
     val capacityPerOccurrence: Int? = null,
+    @field:Min(0)
+    val checkInBeforeMinutes: Int = 120,
+    @field:Min(0)
+    val checkInAfterMinutes: Int = 60,
     val sortOrder: Int = 0,
 )

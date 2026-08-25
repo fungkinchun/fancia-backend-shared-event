@@ -13,5 +13,9 @@ data class UpdateEventTicketTierRequest(
     @field:Min(1)
     val capacityPerOccurrence: Int? = null,
     val clearCapacity: Boolean = false,
+    @field:Min(0)
+    val checkInBeforeMinutes: Int? = null,
+    @field:Min(0)
+    val checkInAfterMinutes: Int? = null,
     val sortOrder: Int? = null,
 )
