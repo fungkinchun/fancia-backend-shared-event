@@ -31,4 +31,6 @@ data class CreateEventRequest(
     @field:Valid
     val recurrence: EventRecurrenceDto? = null,
     val approvalRequired: Boolean? = true,
+    @field:Valid
+    val ticketTiers: List<@Valid CreateEventTicketTierRequest>? = null,
 )
