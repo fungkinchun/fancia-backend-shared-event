@@ -11,6 +11,11 @@ data class CheckInRequest(
     val token: String,
 )
 
+data class ManualCheckInRequest(
+    @field:jakarta.validation.constraints.NotNull
+    val userId: UUID,
+)
+
 data class CheckInSyncRequest(
     val tokens: List<String> = emptyList(),
 )
@@ -20,7 +25,6 @@ data class CheckInResultResponse(
     val alreadyCheckedIn: Boolean,
     val checkedInAt: LocalDateTime?,
     val userId: UUID?,
-    val displayName: String?,
     val tierName: String?,
     val guestCount: Int?,
     val errorCode: String? = null,
@@ -30,7 +34,6 @@ data class CheckInResultResponse(
 data class CheckInRosterEntry(
     val tokenHash: String,
     val userId: UUID,
-    val displayName: String?,
     val tierName: String?,
     val guestCount: Int,
     val checkedInAt: LocalDateTime?,
