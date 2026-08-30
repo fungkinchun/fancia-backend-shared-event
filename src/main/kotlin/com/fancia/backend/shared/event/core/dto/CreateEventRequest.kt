@@ -2,6 +2,7 @@ package com.fancia.backend.shared.event.core.dto
 
 import com.fancia.backend.shared.common.social.core.dto.LinkItem
 import com.fancia.backend.shared.common.tag.core.dto.TagItemRequest
+import com.fancia.backend.shared.event.core.enums.EventType
 import com.fancia.backend.shared.event.core.enums.EventVisibility
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
@@ -23,6 +24,7 @@ data class CreateEventRequest(
     val endTime: LocalDateTime,
     val interestGroups: Set<UUID> = emptySet(),
     val tags: Set<@Valid TagItemRequest> = emptySet(),
+    val eventType: EventType? = EventType.REGULAR,
     val visibility: EventVisibility? = EventVisibility.PUBLIC,
     @field:Valid
     val location: EventLocationDto? = null,

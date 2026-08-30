@@ -3,6 +3,7 @@ package com.fancia.backend.shared.event.core.entity
 import com.fancia.backend.shared.common.core.entity.AbstractEntity
 import com.fancia.backend.shared.common.social.core.entity.Link
 import com.fancia.backend.shared.event.core.enums.EventLocationKind
+import com.fancia.backend.shared.event.core.enums.EventType
 import com.fancia.backend.shared.event.core.enums.EventVisibility
 import com.fancia.backend.shared.event.core.enums.RecurrenceFrequency
 import jakarta.persistence.*
@@ -20,6 +21,10 @@ class Event : AbstractEntity() {
 
     @Column(nullable = false, length = 4000)
     var description: String = ""
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "event_type", nullable = false, length = 32)
+    var eventType: EventType = EventType.REGULAR
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

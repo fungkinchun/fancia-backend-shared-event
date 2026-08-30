@@ -2,6 +2,7 @@ package com.fancia.backend.shared.event.core.dto
 
 import com.fancia.backend.shared.common.social.core.dto.LinkItem
 import com.fancia.backend.shared.common.tag.core.dto.TagItemRequest
+import com.fancia.backend.shared.event.core.enums.EventType
 import com.fancia.backend.shared.event.core.enums.EventVisibility
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
@@ -18,6 +19,7 @@ data class UpdateEventRequest(
     @field:NotNull(message = "Event end time is required")
     val endTime: LocalDateTime,
     val tags: Set<@Valid TagItemRequest> = emptySet(),
+    val eventType: EventType? = null,
     val visibility: EventVisibility? = EventVisibility.PUBLIC,
     @field:Valid
     val location: EventLocationDto? = null,
