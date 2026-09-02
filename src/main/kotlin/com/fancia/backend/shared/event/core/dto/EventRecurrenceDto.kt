@@ -7,6 +7,5 @@ import java.time.LocalDateTime
 data class EventRecurrenceDto(
     val frequency: RecurrenceFrequency,
     val daysOfWeek: Set<DayOfWeek> = emptySet(),
-    /** Occurrences are hidden until this instant (exclusive resume boundary). */
     val pausedUntil: LocalDateTime? = null,
 )

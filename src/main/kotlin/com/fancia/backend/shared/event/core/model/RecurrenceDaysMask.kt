@@ -2,10 +2,6 @@ package com.fancia.backend.shared.event.core.model
 
 import java.time.DayOfWeek
 
-/**
- * Weekly recurrence as a 7-bit mask in SMTWTFS order (Sunday = leftmost bit).
- * Example: Sunday only → `"1000000"` → [RecurrenceDaysMask.SUNDAY] (64).
- */
 @JvmInline
 value class RecurrenceDaysMask(val bits: Int) {
     init {
@@ -50,7 +46,6 @@ value class RecurrenceDaysMask(val bits: Int) {
             return RecurrenceDaysMask(days.fold(0) { acc, day -> acc or day.toMaskBit() })
         }
 
-        /** Parses a 7-character SMTWTFS string, e.g. `"1000000"` for every Sunday. */
         fun fromSmsString(value: String): RecurrenceDaysMask {
             require(value.length == 7) { "Expected 7-character SMTWTFS mask" }
             var bits = 0

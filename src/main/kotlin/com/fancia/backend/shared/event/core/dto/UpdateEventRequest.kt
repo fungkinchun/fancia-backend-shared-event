@@ -25,7 +25,6 @@ data class UpdateEventRequest(
     val location: EventLocationDto? = null,
     @field:Valid
     val links: List<LinkItem> = emptyList(),
-    /** Skip recurring occurrences before this time. Null clears an active pause. */
     val recurrencePausedUntil: LocalDateTime? = null,
     val approvalRequired: Boolean? = null,
 )

@@ -39,10 +39,6 @@ object RecurringEventVisibility {
         }
     }
 
-    /**
-     * Upcoming browse: one-time events that have not started, or recurring series
-     * that still have a future occurrence (including between slots).
-     */
     fun isListable(event: Event, now: LocalDateTime): Boolean {
         if (isPauseActive(event, now)) return false
         val anchorStart = event.startTime ?: return false
@@ -54,11 +50,6 @@ object RecurringEventVisibility {
         }
     }
 
-    /**
-     * Past browse: one-time events that have started, or recurring series that have
-     * already had at least one occurrence (anchor start is before [now]).
-     * A recurring event can be both past-listable and upcoming-listable.
-     */
     fun isPastListable(event: Event, now: LocalDateTime): Boolean {
         val anchorStart = event.startTime ?: return false
         return anchorStart.isBefore(now)
@@ -94,7 +85,6 @@ object RecurringEventVisibility {
         return now.isBefore(pausedUntil)
     }
 
-    /** True when today's slot at the anchor clock time is still upcoming. */
     fun isDailyListable(anchorStart: LocalDateTime, now: LocalDateTime): Boolean {
         val todayStart = now.toLocalDate().atTime(anchorStart.toLocalTime())
         return !todayStart.isBefore(now)
