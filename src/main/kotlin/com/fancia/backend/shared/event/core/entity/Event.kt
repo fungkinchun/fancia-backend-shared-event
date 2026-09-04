@@ -37,7 +37,7 @@ class Event : AbstractEntity() {
     var endTime: LocalDateTime? = null
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable
+    @CollectionTable(name = "event_interest_groups", joinColumns = [JoinColumn(name = "event_id")])
     @Column(name = "event_interest_groups")
     var interestGroups: MutableSet<UUID> = mutableSetOf()
 
