@@ -23,4 +23,5 @@ data class EventResponse(
     var links: Set<LinkResponse> = emptySet(),
     var recurrence: EventRecurrenceDto? = null,
     var approvalRequired: Boolean = true,
+    var savedByCurrentUser: Boolean? = null,
 )
