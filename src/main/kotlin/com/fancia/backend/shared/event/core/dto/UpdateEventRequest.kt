@@ -11,6 +11,9 @@ import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
 data class UpdateEventRequest(
+    @field:NotBlank(message = "Event name is required")
+    @field:Size(max = 255, message = "Event name must be at most 255 characters")
+    val name: String,
     @field:NotBlank(message = "Event description is required")
     @field:Size(max = 4000, message = "Event description must be at most 4000 characters")
     val description: String,
