@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "event_time_slots")
 class EventTimeSlot : AbstractEntity() {
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "event_id", nullable = false)
     var event: Event? = null
 
