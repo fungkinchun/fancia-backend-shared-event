@@ -30,6 +30,9 @@ class Event : AbstractEntity() {
     @Column(nullable = false)
     var visibility: EventVisibility = EventVisibility.PUBLIC
 
+    @Column(name = "invite_token", length = 64)
+    var inviteToken: String? = null
+
     @Column(name = "approval_required", nullable = false)
     var approvalRequired: Boolean = true
 

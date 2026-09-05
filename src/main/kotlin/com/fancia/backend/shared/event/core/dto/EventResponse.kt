@@ -19,6 +19,7 @@ data class EventResponse(
     var tags: Set<UUID> = emptySet(),
     var eventType: EventType = EventType.REGULAR,
     var visibility: EventVisibility = EventVisibility.PUBLIC,
+    var inviteToken: String? = null,
     var location: EventLocationDto? = null,
     var links: Set<LinkResponse> = emptySet(),
     var recurrence: EventRecurrenceDto? = null,
