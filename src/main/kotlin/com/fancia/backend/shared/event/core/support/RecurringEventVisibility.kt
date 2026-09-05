@@ -41,9 +41,10 @@ object RecurringEventVisibility {
 
     fun isListable(event: Event, now: LocalDateTime): Boolean {
         if (isPauseActive(event, now)) return false
-        val anchorStart = event.startTime ?: return false
+        val anchors = EventTimeSlotSchedule.anchors(event)
+        if (anchors.isEmpty()) return false
         return when (event.recurrenceFrequency) {
-            RecurrenceFrequency.NONE -> !anchorStart.isBefore(now)
+            RecurrenceFrequency.NONE -> anchors.any { !it.startTime.isBefore(now) }
             RecurrenceFrequency.DAILY -> true
             RecurrenceFrequency.WEEKLY -> RecurrenceDaysMask(event.recurrenceDaysMask).isNotEmpty()
             RecurrenceFrequency.MONTHLY -> true
@@ -51,31 +52,57 @@ object RecurringEventVisibility {
     }
 
     fun isPastListable(event: Event, now: LocalDateTime): Boolean {
-        val anchorStart = event.startTime ?: return false
-        return anchorStart.isBefore(now)
+        val anchors = EventTimeSlotSchedule.anchors(event)
+        if (anchors.isEmpty()) return false
+        return anchors.any { it.startTime.isBefore(now) }
     }
 
     fun nextOccurrenceStart(event: Event, now: LocalDateTime): LocalDateTime? {
+        return nextOccurrenceWindow(event, now)?.first
+    }
+
+    fun nextOccurrenceEnd(event: Event, now: LocalDateTime): LocalDateTime? {
+        return nextOccurrenceWindow(event, now)?.second
+    }
+
+    fun nextOccurrenceWindow(event: Event, now: LocalDateTime): Pair<LocalDateTime, LocalDateTime>? {
         if (!isListable(event, now)) return null
-        val anchorStart = event.startTime ?: return null
+        return EventTimeSlotSchedule.anchors(event)
+            .mapNotNull { window ->
+                val start = nextOccurrenceStartForAnchor(event, window.startTime, now) ?: return@mapNotNull null
+                val end = start.plus(Duration.between(window.startTime, window.endTime))
+                start to end
+            }
+            .minByOrNull { it.first }
+    }
+
+    fun nextOccurrenceStartForAnchor(
+        event: Event,
+        anchorStart: LocalDateTime,
+        now: LocalDateTime,
+    ): LocalDateTime? {
+        if (isPauseActive(event, now)) return null
         val from = if (now.isBefore(anchorStart)) anchorStart else now
         return when (event.recurrenceFrequency) {
-            RecurrenceFrequency.NONE -> anchorStart
+            RecurrenceFrequency.NONE ->
+                if (!anchorStart.isBefore(now)) anchorStart else null
             RecurrenceFrequency.DAILY -> nextDailyOccurrenceStart(anchorStart, from)
-            RecurrenceFrequency.WEEKLY -> nextWeeklyOccurrenceStart(
-                anchorStart,
-                RecurrenceDaysMask(event.recurrenceDaysMask),
-                from,
-            )
-
+            RecurrenceFrequency.WEEKLY -> {
+                val mask = RecurrenceDaysMask(event.recurrenceDaysMask)
+                if (mask.isEmpty()) null
+                else nextWeeklyOccurrenceStart(anchorStart, mask, from)
+            }
             RecurrenceFrequency.MONTHLY -> nextMonthlyOccurrenceStart(anchorStart, from)
         }
     }
 
-    fun nextOccurrenceEnd(event: Event, now: LocalDateTime): LocalDateTime? {
-        val start = nextOccurrenceStart(event, now) ?: return null
-        val anchorStart = event.startTime ?: return null
-        val anchorEnd = event.endTime ?: return null
+    fun nextOccurrenceEndForAnchor(
+        event: Event,
+        anchorStart: LocalDateTime,
+        anchorEnd: LocalDateTime,
+        now: LocalDateTime,
+    ): LocalDateTime? {
+        val start = nextOccurrenceStartForAnchor(event, anchorStart, now) ?: return null
         return start.plus(Duration.between(anchorStart, anchorEnd))
     }
 

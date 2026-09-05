@@ -36,6 +36,10 @@ class Event : AbstractEntity() {
     var startTime: LocalDateTime? = null
     var endTime: LocalDateTime? = null
 
+    @OneToMany(mappedBy = "event", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OrderBy("sortOrder ASC")
+    val timeSlots: MutableList<EventTimeSlot> = mutableListOf()
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "event_interest_groups", joinColumns = [JoinColumn(name = "event_id")])
     @Column(name = "event_interest_groups")

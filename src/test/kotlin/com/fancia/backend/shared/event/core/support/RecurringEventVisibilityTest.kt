@@ -1,6 +1,7 @@
 package com.fancia.backend.shared.event.core.support
 
 import com.fancia.backend.shared.event.core.entity.Event
+import com.fancia.backend.shared.event.core.entity.EventTimeSlot
 import com.fancia.backend.shared.event.core.dto.EventRecurrenceDto
 import com.fancia.backend.shared.event.core.enums.RecurrenceFrequency
 import com.fancia.backend.shared.event.core.exception.RecurrenceDaysOfWeekNotSupportedException
@@ -224,5 +225,58 @@ class RecurringEventVisibilityTest : FunSpec({
         val now = LocalDateTime.of(2026, 7, 22, 12, 0)
 
         RecurringEventVisibility.nextOccurrenceStart(event, now) shouldBe anchorStart
+    }
+
+    test("one-off event with two slots is listable while a later slot is still upcoming") {
+        val event = Event().apply {
+            startTime = LocalDateTime.of(2030, 6, 1, 10, 0)
+            endTime = LocalDateTime.of(2030, 6, 1, 12, 0)
+            recurrenceFrequency = RecurrenceFrequency.NONE
+            timeSlots.add(
+                EventTimeSlot().apply {
+                    startTime = LocalDateTime.of(2030, 6, 1, 10, 0)
+                    endTime = LocalDateTime.of(2030, 6, 1, 12, 0)
+                    sortOrder = 0
+                },
+            )
+            timeSlots.add(
+                EventTimeSlot().apply {
+                    startTime = LocalDateTime.of(2030, 6, 1, 18, 0)
+                    endTime = LocalDateTime.of(2030, 6, 1, 20, 0)
+                    sortOrder = 1
+                },
+            )
+        }
+        val now = LocalDateTime.of(2030, 6, 1, 13, 0)
+
+        RecurringEventVisibility.isListable(event, now) shouldBe true
+        RecurringEventVisibility.nextOccurrenceStart(event, now) shouldBe LocalDateTime.of(2030, 6, 1, 18, 0)
+        RecurringEventVisibility.nextOccurrenceEnd(event, now) shouldBe LocalDateTime.of(2030, 6, 1, 20, 0)
+    }
+
+    test("daily recurrence applies each time slot's clock on the next day") {
+        val event = Event().apply {
+            startTime = LocalDateTime.of(2030, 6, 1, 10, 0)
+            endTime = LocalDateTime.of(2030, 6, 1, 12, 0)
+            recurrenceFrequency = RecurrenceFrequency.DAILY
+            timeSlots.add(
+                EventTimeSlot().apply {
+                    startTime = LocalDateTime.of(2030, 6, 1, 10, 0)
+                    endTime = LocalDateTime.of(2030, 6, 1, 12, 0)
+                    sortOrder = 0
+                },
+            )
+            timeSlots.add(
+                EventTimeSlot().apply {
+                    startTime = LocalDateTime.of(2030, 6, 1, 18, 0)
+                    endTime = LocalDateTime.of(2030, 6, 1, 20, 0)
+                    sortOrder = 1
+                },
+            )
+        }
+        val now = LocalDateTime.of(2030, 6, 1, 19, 0)
+
+        RecurringEventVisibility.nextOccurrenceStart(event, now) shouldBe LocalDateTime.of(2030, 6, 2, 10, 0)
+        RecurringEventVisibility.nextOccurrenceEnd(event, now) shouldBe LocalDateTime.of(2030, 6, 2, 12, 0)
     }
 })

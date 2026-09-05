@@ -6,7 +6,6 @@ import com.fancia.backend.shared.event.core.enums.EventType
 import com.fancia.backend.shared.event.core.enums.EventVisibility
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 import java.util.*
@@ -18,10 +17,8 @@ data class CreateEventRequest(
     @field:NotBlank(message = "Event description is required")
     @field:Size(max = 4000, message = "Event description must be at most 4000 characters")
     val description: String,
-    @field:NotNull(message = "Event start time is required")
-    val startTime: LocalDateTime,
-    @field:NotNull(message = "Event end time is required")
-    val endTime: LocalDateTime,
+    val startTime: LocalDateTime? = null,
+    val endTime: LocalDateTime? = null,
     val interestGroups: Set<UUID> = emptySet(),
     val tags: Set<@Valid TagItemRequest> = emptySet(),
     val eventType: EventType? = EventType.REGULAR,
@@ -32,6 +29,8 @@ data class CreateEventRequest(
     val links: List<LinkItem> = emptyList(),
     @field:Valid
     val recurrence: EventRecurrenceDto? = null,
+    @field:Valid
+    val timeSlots: List<@Valid EventTimeSlotRequest>? = null,
     val approvalRequired: Boolean? = true,
     @field:Valid
     val ticketTiers: List<@Valid CreateEventTicketTierRequest>? = null,

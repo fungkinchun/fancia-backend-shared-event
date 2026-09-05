@@ -10,4 +10,5 @@ data class EventOccurrenceResponse(
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
     val status: OccurrenceStatus,
+    val timeSlotId: UUID? = null,
 )

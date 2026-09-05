@@ -17,6 +17,10 @@ class EventOccurrence : AbstractEntity() {
     @JoinColumn(name = "event_id", nullable = false)
     var event: Event? = null
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "time_slot_id")
+    var timeSlot: EventTimeSlot? = null
+
     @Column(name = "start_time", nullable = false)
     var startTime: LocalDateTime = LocalDateTime.MIN
 
