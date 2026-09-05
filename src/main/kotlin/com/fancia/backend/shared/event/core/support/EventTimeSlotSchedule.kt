@@ -70,7 +70,7 @@ object EventTimeSlotSchedule {
             }
         }
         val start = event.startTime ?: return emptyList()
-        val end = event.endTime ?: return emptyList()
+        val end = event.endTime ?: start
         return listOf(Window(startTime = start, endTime = end))
     }
 }
