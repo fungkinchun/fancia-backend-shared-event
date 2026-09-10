@@ -25,5 +25,8 @@ data class EventResponse(
     var recurrence: EventRecurrenceDto? = null,
     var approvalRequired: Boolean = true,
     var savedByCurrentUser: Boolean? = null,
+    var averageRating: Double? = null,
+    var ratingCount: Long = 0,
+    var currentUserRating: Int? = null,
     var timeSlots: List<EventTimeSlotResponse> = emptyList(),
 )
