@@ -78,6 +78,8 @@ interface EventRepository : JpaRepository<Event, UUID> {
 
     fun findByIdAndCreatedBy(id: UUID, createdBy: UUID): Event?
 
+    fun findByCreatedBy(createdBy: UUID): List<Event>
+
     @Query("SELECT e FROM Event e WHERE :tagId MEMBER OF e.tags")
     fun findByTagId(@Param("tagId") tagId: UUID): List<Event>
 
